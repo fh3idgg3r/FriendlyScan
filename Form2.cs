@@ -110,7 +110,7 @@ namespace FriendlyScan
         }
 
         
-
+        //aqui não tá funfando direito
         public void scanNet(string internet)
         {
             Ping myPing;
