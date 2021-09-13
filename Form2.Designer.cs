@@ -30,10 +30,11 @@ namespace FriendlyScan
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.metroProgressSpinner1 = new MetroFramework.Controls.MetroProgressSpinner();
             this.metroCPU = new MetroFramework.Controls.MetroTile();
@@ -46,14 +47,14 @@ namespace FriendlyScan
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroTile2 = new MetroFramework.Controls.MetroTile();
             this.metroProgressSpinner2 = new MetroFramework.Controls.MetroProgressSpinner();
-            this.metroTextBox1 = new MetroFramework.Controls.MetroTextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.CPU = new System.Diagnostics.PerformanceCounter();
             this.RAM = new System.Diagnostics.PerformanceCounter();
             this.metroTextBox2 = new MetroFramework.Controls.MetroTextBox();
-            this.cmdScan = new MetroFramework.Controls.MetroButton();
-            this.metroTextIP = new MetroFramework.Controls.MetroTextBox();
-            this.textHosts = new System.Windows.Forms.TextBox();
+            this.metroTextBox1 = new MetroFramework.Controls.MetroTextBox();
+            this.metroConexao = new MetroFramework.Controls.MetroLabel();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.metroSpeed = new MetroFramework.Controls.MetroLabel();
             this.metroCPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.metroTile2.SuspendLayout();
@@ -86,7 +87,7 @@ namespace FriendlyScan
             this.metroCPU.Controls.Add(this.metroLabelCPU);
             this.metroCPU.Controls.Add(this.metroProgressBarCPU);
             this.metroCPU.Controls.Add(this.metroLabel1);
-            this.metroCPU.Location = new System.Drawing.Point(24, 91);
+            this.metroCPU.Location = new System.Drawing.Point(25, 91);
             this.metroCPU.Name = "metroCPU";
             this.metroCPU.Size = new System.Drawing.Size(347, 247);
             this.metroCPU.Style = MetroFramework.MetroColorStyle.Orange;
@@ -99,22 +100,22 @@ namespace FriendlyScan
             // 
             // chart1
             // 
-            chartArea8.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea8);
-            legend8.Name = "Legend1";
-            this.chart1.Legends.Add(legend8);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(22, 138);
             this.chart1.Name = "chart1";
-            series15.ChartArea = "ChartArea1";
-            series15.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series15.Legend = "Legend1";
-            series15.Name = "CPU";
-            series16.ChartArea = "ChartArea1";
-            series16.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series16.Legend = "Legend1";
-            series16.Name = "RAM";
-            this.chart1.Series.Add(series15);
-            this.chart1.Series.Add(series16);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "CPU";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "RAM";
+            this.chart1.Series.Add(series1);
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(243, 96);
             this.chart1.TabIndex = 6;
             // 
@@ -182,15 +183,14 @@ namespace FriendlyScan
             // 
             this.metroTile2.ActiveControl = null;
             this.metroTile2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.metroTile2.Controls.Add(this.textHosts);
-            this.metroTile2.Controls.Add(this.metroTextIP);
-            this.metroTile2.Controls.Add(this.cmdScan);
-            this.metroTile2.Location = new System.Drawing.Point(24, 209);
+            this.metroTile2.Controls.Add(this.metroSpeed);
+            this.metroTile2.Controls.Add(this.metroConexao);
+            this.metroTile2.Location = new System.Drawing.Point(25, 229);
             this.metroTile2.Name = "metroTile2";
-            this.metroTile2.Size = new System.Drawing.Size(347, 126);
+            this.metroTile2.Size = new System.Drawing.Size(347, 109);
             this.metroTile2.Style = MetroFramework.MetroColorStyle.Orange;
             this.metroTile2.TabIndex = 3;
-            this.metroTile2.Text = "Scan Internet";
+            this.metroTile2.Text = "Banda Larga Internet";
             this.metroTile2.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.metroTile2.UseSelectable = true;
             this.metroTile2.Click += new System.EventHandler(this.metroTile2_Click);
@@ -209,42 +209,6 @@ namespace FriendlyScan
             this.metroProgressSpinner2.UseSelectable = true;
             this.metroProgressSpinner2.UseStyleColors = true;
             this.metroProgressSpinner2.Value = 100;
-            // 
-            // metroTextBox1
-            // 
-            this.metroTextBox1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.metroTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            // 
-            // 
-            // 
-            this.metroTextBox1.CustomButton.Image = null;
-            this.metroTextBox1.CustomButton.Location = new System.Drawing.Point(53, 1);
-            this.metroTextBox1.CustomButton.Name = "";
-            this.metroTextBox1.CustomButton.Size = new System.Drawing.Size(21, 21);
-            this.metroTextBox1.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroTextBox1.CustomButton.TabIndex = 1;
-            this.metroTextBox1.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.metroTextBox1.CustomButton.UseSelectable = true;
-            this.metroTextBox1.CustomButton.Visible = false;
-            this.metroTextBox1.Lines = new string[] {
-        "Voltar"};
-            this.metroTextBox1.Location = new System.Drawing.Point(293, 302);
-            this.metroTextBox1.MaxLength = 32767;
-            this.metroTextBox1.Name = "metroTextBox1";
-            this.metroTextBox1.PasswordChar = '\0';
-            this.metroTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.metroTextBox1.SelectedText = "";
-            this.metroTextBox1.SelectionLength = 0;
-            this.metroTextBox1.SelectionStart = 0;
-            this.metroTextBox1.ShortcutsEnabled = true;
-            this.metroTextBox1.Size = new System.Drawing.Size(75, 23);
-            this.metroTextBox1.TabIndex = 5;
-            this.metroTextBox1.Text = "Voltar";
-            this.metroTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.metroTextBox1.UseSelectable = true;
-            this.metroTextBox1.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.metroTextBox1.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
-            this.metroTextBox1.Click += new System.EventHandler(this.metroTextBox1_Click);
             // 
             // timer1
             // 
@@ -280,7 +244,7 @@ namespace FriendlyScan
             this.metroTextBox2.CustomButton.Visible = false;
             this.metroTextBox2.Lines = new string[] {
         "Voltar"};
-            this.metroTextBox2.Location = new System.Drawing.Point(293, 121);
+            this.metroTextBox2.Location = new System.Drawing.Point(273, 268);
             this.metroTextBox2.MaxLength = 32767;
             this.metroTextBox2.Name = "metroTextBox2";
             this.metroTextBox2.PasswordChar = '\0';
@@ -298,53 +262,66 @@ namespace FriendlyScan
             this.metroTextBox2.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             this.metroTextBox2.Click += new System.EventHandler(this.metroTextBox2_Click);
             // 
-            // cmdScan
+            // metroTextBox1
             // 
-            this.cmdScan.Location = new System.Drawing.Point(189, 33);
-            this.cmdScan.Name = "cmdScan";
-            this.cmdScan.Size = new System.Drawing.Size(75, 23);
-            this.cmdScan.TabIndex = 0;
-            this.cmdScan.Text = "Scan";
-            this.cmdScan.UseSelectable = true;
-            this.cmdScan.Click += new System.EventHandler(this.cmdScan_Click);
-            // 
-            // metroTextIP
+            this.metroTextBox1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.metroTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             // 
             // 
             // 
+            this.metroTextBox1.CustomButton.Image = null;
+            this.metroTextBox1.CustomButton.Location = new System.Drawing.Point(53, 1);
+            this.metroTextBox1.CustomButton.Name = "";
+            this.metroTextBox1.CustomButton.Size = new System.Drawing.Size(21, 21);
+            this.metroTextBox1.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroTextBox1.CustomButton.TabIndex = 1;
+            this.metroTextBox1.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.metroTextBox1.CustomButton.UseSelectable = true;
+            this.metroTextBox1.CustomButton.Visible = false;
+            this.metroTextBox1.Lines = new string[] {
+        "Voltar"};
+            this.metroTextBox1.Location = new System.Drawing.Point(273, 302);
+            this.metroTextBox1.MaxLength = 32767;
+            this.metroTextBox1.Name = "metroTextBox1";
+            this.metroTextBox1.PasswordChar = '\0';
+            this.metroTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.metroTextBox1.SelectedText = "";
+            this.metroTextBox1.SelectionLength = 0;
+            this.metroTextBox1.SelectionStart = 0;
+            this.metroTextBox1.ShortcutsEnabled = true;
+            this.metroTextBox1.Size = new System.Drawing.Size(75, 23);
+            this.metroTextBox1.TabIndex = 5;
+            this.metroTextBox1.Text = "Voltar";
+            this.metroTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.metroTextBox1.UseSelectable = true;
+            this.metroTextBox1.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.metroTextBox1.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.metroTextBox1.Click += new System.EventHandler(this.metroTextBox1_Click);
             // 
-            this.metroTextIP.CustomButton.Image = null;
-            this.metroTextIP.CustomButton.Location = new System.Drawing.Point(136, 1);
-            this.metroTextIP.CustomButton.Name = "";
-            this.metroTextIP.CustomButton.Size = new System.Drawing.Size(21, 21);
-            this.metroTextIP.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroTextIP.CustomButton.TabIndex = 1;
-            this.metroTextIP.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.metroTextIP.CustomButton.UseSelectable = true;
-            this.metroTextIP.CustomButton.Visible = false;
-            this.metroTextIP.Lines = new string[0];
-            this.metroTextIP.Location = new System.Drawing.Point(26, 32);
-            this.metroTextIP.MaxLength = 32767;
-            this.metroTextIP.Name = "metroTextIP";
-            this.metroTextIP.PasswordChar = '\0';
-            this.metroTextIP.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.metroTextIP.SelectedText = "";
-            this.metroTextIP.SelectionLength = 0;
-            this.metroTextIP.SelectionStart = 0;
-            this.metroTextIP.ShortcutsEnabled = true;
-            this.metroTextIP.Size = new System.Drawing.Size(158, 23);
-            this.metroTextIP.TabIndex = 2;
-            this.metroTextIP.UseSelectable = true;
-            this.metroTextIP.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.metroTextIP.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // metroConexao
             // 
-            // textHosts
+            this.metroConexao.AutoSize = true;
+            this.metroConexao.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.metroConexao.Location = new System.Drawing.Point(53, 92);
+            this.metroConexao.Name = "metroConexao";
+            this.metroConexao.Size = new System.Drawing.Size(62, 19);
+            this.metroConexao.Style = MetroFramework.MetroColorStyle.Black;
+            this.metroConexao.TabIndex = 0;
+            this.metroConexao.Text = "Conexão";
             // 
-            this.textHosts.Location = new System.Drawing.Point(26, 64);
-            this.textHosts.Multiline = true;
-            this.textHosts.Name = "textHosts";
-            this.textHosts.Size = new System.Drawing.Size(297, 174);
-            this.textHosts.TabIndex = 3;
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // metroSpeed
+            // 
+            this.metroSpeed.AutoSize = true;
+            this.metroSpeed.Location = new System.Drawing.Point(53, 171);
+            this.metroSpeed.Name = "metroSpeed";
+            this.metroSpeed.Size = new System.Drawing.Size(94, 19);
+            this.metroSpeed.Style = MetroFramework.MetroColorStyle.Black;
+            this.metroSpeed.TabIndex = 1;
+            this.metroSpeed.Text = "Speed Internet";
             // 
             // Form2
             // 
@@ -357,6 +334,7 @@ namespace FriendlyScan
             this.Controls.Add(this.metroCPU);
             this.Controls.Add(this.metroProgressSpinner1);
             this.Controls.Add(this.metroProgressSpinner2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form2";
             this.Style = MetroFramework.MetroColorStyle.Orange;
             this.Text = "FriendlyScan";
@@ -379,7 +357,6 @@ namespace FriendlyScan
         private MetroFramework.Controls.MetroTile metroCPU;
         private MetroFramework.Controls.MetroTile metroTile2;
         private MetroFramework.Controls.MetroProgressSpinner metroProgressSpinner2;
-        private MetroFramework.Controls.MetroTextBox metroTextBox1;
         private MetroFramework.Controls.MetroLabel metroLabelCPU;
         private MetroFramework.Controls.MetroProgressBar metroProgressBarCPU;
         private MetroFramework.Controls.MetroLabel metroLabel1;
@@ -391,8 +368,9 @@ namespace FriendlyScan
         public System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private MetroFramework.Controls.MetroTextBox metroTextBox2;
-        private System.Windows.Forms.TextBox textHosts;
-        private MetroFramework.Controls.MetroTextBox metroTextIP;
-        private MetroFramework.Controls.MetroButton cmdScan;
+        private MetroFramework.Controls.MetroTextBox metroTextBox1;
+        private MetroFramework.Controls.MetroLabel metroConexao;
+        private System.Windows.Forms.Timer timer2;
+        private MetroFramework.Controls.MetroLabel metroSpeed;
     }
 }

@@ -28,17 +28,16 @@ namespace FriendlyScan
             metroTextBox2.Hide();
             metroLabel1.Hide();
             metroLabel2.Hide();
+            metroSpeed.Hide();
             metroProgressBarCPU.Hide();
             metroProgressBarRAM.Hide();
             metroLabelCPU.Hide();
             metroLabelRAM.Hide();
+            metroConexao.Hide();
             chart1.Hide();
             //Design do botão "Scan Internet"
             metroTile2.Location = new Point(24,211);
             metroTile2.Size = new Size(347,130);
-            metroTextIP.Hide();
-            cmdScan.Hide();
-            textHosts.Hide();
         }
         //Declarando varial myThread
         Thread myThread = null;
@@ -79,6 +78,7 @@ namespace FriendlyScan
             metroLabelCPU.Hide();
             metroLabelRAM.Hide();
             chart1.Hide();
+            timer1.Stop();
         }
 
         //método para o funcionamento do monitoramento da CPU e RAM
@@ -92,116 +92,70 @@ namespace FriendlyScan
             metroLabelRAM.Text = string.Format("{0:0.00}%", ram);
             chart1.Series["CPU"].Points.AddY(cpu);
             chart1.Series["RAM"].Points.AddY(ram);
+
+           
         }
 
-        //Se clicar em "Scan Internet", faça:
+        //Se clicar em "Banda Larga Internet", faça:
         public void metroTile2_Click(object sender, EventArgs e)
         {
-            
+            timer2.Start();
             metroTile2.Size = new Size(357, 247);
             metroTile2.Location = new Point(21,91);
             metroCPU.Hide();
             metroTextBox2.Show();
-            metroTextBox2.Location = new Point(293, 123);
-            metroTextIP.Show();
-            cmdScan.Show();
-            textHosts.Show();
+            metroTextBox2.Location = new Point(273, 302);
+            metroConexao.Show();
+            metroSpeed.Show();
 
-        }
-
-        
-        //aqui não tá funfando direito
-        public void scanNet(string internet)
+        }       
+        /* Método responsável por fazer a requisição com o servidor
+           fazendo com que seja possivel calcular a velocidade de download*/
+        public static double Speed(string url)
         {
-            Ping myPing;
-            PingReply reply;
-            IPAddress addr;
-            IPHostEntry host;
-
-            for(int i = 1; i<255; i++)
-            {
-                string internetn = "." + i.ToString();
-                myPing = new Ping();
-                reply = myPing.Send(internet + internetn);
-
-                if (reply.Status == IPStatus.Success)
-                {
-                    textHosts.Text = internet + internetn;
-                    try
-                    {
-                        addr = IPAddress.Parse(internet + internetn);
-                        host = Dns.GetHostEntry(addr);
-
-                        textHosts.AppendText(internet + internetn + host.HostName.ToString() + "up");
-                    }
-                    catch
-                    {
-                        
-                    }
-                }
-                else
-                {
-                    
-                    textHosts.Text = internetn ;
-                }
-
-            }
+            WebClient wc = new WebClient();
+            DateTime dt1 = DateTime.Now;
+            Byte[] data = wc.DownloadData("https://www.google.com/");
+            DateTime dt2 = DateTime.Now;
+            url = Convert.ToByte(data);
+            return (data.Length * 8) / (dt2 - dt1).TotalSeconds;
             
-
         }
 
-        private void cmdScan_Click(object sender, EventArgs e)
-        {
-            myThread = new Thread(() => scanNet(metroTextIP.Text));
-            myThread.Start();
-
-            if (myThread.IsAlive)
-            {
-                metroTextBox2.Enabled = true;
-                cmdScan.Enabled = false;
-                metroTextIP.Enabled = false;
-            }
-        }
-
-        //Se botão "Voltar Scan Internet" for clicado, faça:
+        //Se botão "Voltar Banda Larga Internet" for clicado, faça:
         private void metroTextBox2_Click(object sender, EventArgs e)
         {
-
-            
-            if (myThread == null)
-            {
-                
                 
                 metroTile2.Size = new Size(347, 131);
                 metroTile2.Location = new Point(23, 206);
                 metroCPU.Show();
                 metroTextBox2.Hide();
-
+                metroConexao.Hide();
+                metroSpeed.Hide();
+                timer2.Stop();
                 metroTile2.Location = new Point(24, 211);
                 metroTile2.Size = new Size(347, 130);
-                metroTextIP.Hide();
-                cmdScan.Hide();
-                textHosts.Hide();
-            }
-            if (myThread != null)
-            {
-
-                myThread.Abort();
-
-                metroTile2.Size = new Size(347, 131);
-                metroTile2.Location = new Point(23, 206);
-                metroCPU.Show();
-                metroTextBox2.Hide();
-
-                metroTile2.Location = new Point(24, 211);
-                metroTile2.Size = new Size(347, 130);
-                metroTextIP.Hide();
-                cmdScan.Hide();
-                textHosts.Hide();
-            }
+           
 
         }
+        /* Assim que botão " Banda Larga Internet for clicado
+           Aciona essa função que é responsavel por verificar a 
+           conexão da internet*/
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            bool conexao = NetworkInterface.GetIsNetworkAvailable();
+            if (conexao == true)
+            {
+                metroConexao.Text = "Detectamos acesso a internet";
+                metroConexao.ForeColor = Color.DarkGreen;
+            }
+            else
+            {
+                metroConexao.Text = "Você não possui acesso a internet";
+                metroConexao.ForeColor = Color.Red;
+            }
 
-
+            metroSpeed.Text = "Sua banda larga é de:" + (Speed("https://www.google.com/")/1024) * 0.0009765625 + " mb/s";
+        }
     }
 }
