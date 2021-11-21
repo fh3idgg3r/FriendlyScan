@@ -10,15 +10,36 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Runtime.InteropServices;
+using System.Management.Automation.Runspaces;
+using System.Management.Automation;
+using System.Collections.ObjectModel;
 
 namespace FriendlyScan
 {
     public partial class Form2 : MetroFramework.Forms.MetroForm
     {
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+
+        private static extern IntPtr CreateRoundRectRgn
+            (
+            int nLeftRect,
+            int nTopRect,
+            int RigthRect,
+            int nBottomRect,
+            int nWidthEllipse,
+            int nHeigthEllipse
+            );
         //Quando formulario for iniciado, faça:
         public Form2()
         {
             InitializeComponent();
+            LabelPowerShell.Clear();
+            LabelPowerShell.Text = RunScript(comandosPower[0]) + RunScript(comandosPower[1]);
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 10, 10));
+            progressBar1.Value = 0;
+            metroTextBox3.Hide();
             //Confere se possue códigos rodando em segundo plano
             Control.CheckForIllegalCrossThreadCalls = false;
             //Design do botão "CPU e RAM"
@@ -36,11 +57,31 @@ namespace FriendlyScan
             metroConexao.Hide();
             chart1.Hide();
             //Design do botão "Scan Internet"
-            metroTile2.Location = new Point(24,211);
-            metroTile2.Size = new Size(347,130);
+            metroTile2.Location = new Point(24, 211);
+            metroTile2.Size = new Size(347, 130);
+        }
+        //Método responsável por inicial os comandos PowerShell
+        private string RunScript(string script)
+        {
+            Runspace runspace = RunspaceFactory.CreateRunspace();
+            runspace.Open();
+            Pipeline pipeline = runspace.CreatePipeline();
+            pipeline.Commands.AddScript(script);
+            pipeline.Commands.Add("Out-String");
+            Collection<PSObject> results = pipeline.Invoke();
+            runspace.Close();
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (PSObject pSObject in results)
+                stringBuilder.AppendLine(pSObject.ToString());
+            return stringBuilder.ToString();
         }
         //Declarando varial myThread
         Thread myThread = null;
+
+
+        //variavel que contem os comandos powerShell
+        public string[] comandosPower = { "Get-NetTCPConnection -State Listen | Select-Object -Property LocalPort, State | Sort-Object LocalPort", "$INSTALLED | ?{ $_.DisplayName -ne $null } | sort-object -Property DisplayName -Unique | Format-Table -AutoSize" };
+
 
         private void Form2_Load(object sender, EventArgs e)
         {
@@ -54,7 +95,7 @@ namespace FriendlyScan
             metroCPU.Size = new Size(370,250);
             metroTile2.Hide();
             metroTextBox1.Show();
-            metroTextBox1.Location = new Point(300,308);
+            metroTextBox1.Location = new Point(305,308);
             metroLabel1.Show();
             metroLabel2.Show();
             metroProgressBarCPU.Show();
@@ -113,12 +154,13 @@ namespace FriendlyScan
            fazendo com que seja possivel calcular a velocidade de download*/
         public static double Speed(string url)
         {
+            
             WebClient wc = new WebClient();
             DateTime dt1 = DateTime.Now;
             Byte[] data = wc.DownloadData("https://www.google.com/");
             DateTime dt2 = DateTime.Now;
-            url = Convert.ToByte(data);
-            return (data.Length * 8) / (dt2 - dt1).TotalSeconds;
+            double velNet = (data.Length * 8) / (dt2 - dt1).TotalSeconds;
+            return Math.Round(velNet);
             
         }
 
@@ -146,16 +188,43 @@ namespace FriendlyScan
             bool conexao = NetworkInterface.GetIsNetworkAvailable();
             if (conexao == true)
             {
-                metroConexao.Text = "Detectamos acesso a internet";
-                metroConexao.ForeColor = Color.DarkGreen;
+                metroConexao.Text = "Você possui acesso a internet!";
+                metroConexao.ForeColor = Color.Green;
             }
             else
             {
-                metroConexao.Text = "Você não possui acesso a internet";
+                metroConexao.Text = "Você não possui acesso a internet!";
                 metroConexao.ForeColor = Color.Red;
             }
 
-            metroSpeed.Text = "Sua banda larga é de:" + (Speed("https://www.google.com/")/1024) * 0.0009765625 + " mb/s";
+            double velNet2 = Speed("https://www.google.com/");
+            velNet2 = ((int)velNet2);
+
+            metroSpeed.Text = "Sua velocidade de download é de:" + (velNet2/1024) * 0.0009765625 + " mb/s";
         }
+
+       
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            progressBar1.Value += 1;
+            progressBar1.Text = progressBar1.Value.ToString() + "%";
+
+            if (progressBar1.Value == 100)
+            {
+                timer3.Enabled = false;
+                metroTextBox3.Show();
+               
+            }
+        }
+
+        public void metroTextBox3_Click(object sender, EventArgs e)
+        {
+            Form3 relatorioform = new Form3();
+            relatorioform.Show();
+            this.Hide();
+        }
+
+
     }
 }
